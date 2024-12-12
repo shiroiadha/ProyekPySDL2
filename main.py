@@ -3,7 +3,6 @@ import sdl2.ext
 import sdl2.sdlgfx as gfx
 import math
 import random
-import time
 
 # Inisialisasi SDL2
 sdl2.ext.init()
@@ -16,9 +15,9 @@ gfx.SDL_setFramerate(fps_manager, 60)  # Set frame rate to 60 FPS
 
 # Properti mobil
 cars = [
-    {"x": 0, "y": 425, "width": 100, "height": 50, "speed": 0.8, "color": (0, 255, 0), "wheel_color": (0, 0, 0), "lane": 0, "is_overtaking": False, "overtake_timer": 0},
-    {"x": 150, "y": 425, "width": 100, "height": 50, "speed": 0.3, "color": (255, 0, 0), "wheel_color": (0, 0, 0), "lane": 1, "is_overtaking": False, "overtake_timer": 0},
-    {"x": 15, "y": 425, "width": 100, "height": 50, "speed": 0.7, "color": (0, 0, 255), "wheel_color": (0, 0, 0), "lane": 2, "is_overtaking": False, "overtake_timer": 0}
+    {"x": 0, "y": 410, "width": 100, "height": 50, "speed": 0.8, "color": (0, 255, 0), "wheel_color": (0, 0, 0)},
+    {"x": 150, "y": 425, "width": 100, "height": 50, "speed": 0.3, "color": (255, 0, 0), "wheel_color": (0, 0, 0)},
+    {"x": 15, "y": 460, "width": 100, "height": 50, "speed": 0.7, "color": (0, 0, 255), "wheel_color": (0, 0, 0)}
 ]
 
 striproad = [
@@ -48,10 +47,6 @@ buildings = [
 screen_width, screen_height = 800, 600
 center_x, center_y = screen_width // 2, screen_height // 2 + 165
 
-# Fungsi untuk mengonversi tuple RGB ke warna Uint32
-def rgb_to_color(r, g, b):
-    return (r << 24) + (g << 16) + (b << 8) + 255
-
 # Loop utama
 running = True
 while running:
@@ -61,32 +56,11 @@ while running:
         if event.type == sdl2.SDL_QUIT:
             running = False
 
-    # Update posisi mobil dengan fitur penyalipan dan delay
-    for i, car in enumerate(cars):
-        # Mobil yang sedang menyalip akan memiliki waktu delay sebelum kembali ke jalur
-        if car["is_overtaking"]:
-            car["overtake_timer"] += 1
-            if car["overtake_timer"] > 100:  # Delay selesai setelah 100 frame
-                car["is_overtaking"] = False
-                car["overtake_timer"] = 0
-
-        # Jika mobil ini lebih cepat dan berada di belakang mobil lain
-        if not car["is_overtaking"]:
-            for other_car in cars:
-                if car != other_car and car["x"] + car["width"] > other_car["x"] and car["speed"] > other_car["speed"]:
-                    # Jika mobil lebih cepat dan berada di belakang mobil lain
-                    if abs(car["x"] - other_car["x"]) < 150:
-                        # Menyalip mobil lain (berpindah jalur)
-                        car["is_overtaking"] = True
-                        car["y"] = other_car["y"] - 30  # Bergerak sedikit ke atas
-                        break
-        
-        # Update posisi mobil berdasarkan kecepatan dan apakah sedang menyalip
-        if not car["is_overtaking"]:
-            car["x"] += car["speed"]
+    # Update posisi mobil
+    for car in cars:
+        car["x"] += car["speed"]
         if car["x"] > screen_width:
             car["x"] = -car["width"]  # Reset posisi mobil di luar layar
-            car["y"] = 425  # Reset ke jalur semula
 
     # Update posisi garis jalan
     for perstrip in striproad:
@@ -99,6 +73,8 @@ while running:
         building["x"] -= building["speed"]
         if building["x"] < -building["width"]:
             building["x"] = screen_width  # Reset posisi gedung di luar layar
+    
+    print(f"Sun position: ({sun['x']:.2f}, {sun['y']:.2f}); Moon position: ({moon['x']:.2f}, {moon['y']:.2f})")
     
     # Update posisi bulan dan matahari
     moon["angle"] += moon["speed"]
