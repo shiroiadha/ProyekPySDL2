@@ -15,9 +15,9 @@ gfx.SDL_setFramerate(fps_manager, 60)  # Set frame rate to 60 FPS
 
 # Properti mobil
 cars = [
-    {"x": 0, "y": 410, "width": 100, "height": 50, "speed": 0.8, "color": (0, 255, 0), "wheel_color": (0, 0, 0)},
-    {"x": 150, "y": 425, "width": 100, "height": 50, "speed": 0.3, "color": (255, 0, 0), "wheel_color": (0, 0, 0)},
-    {"x": 15, "y": 460, "width": 100, "height": 50, "speed": 0.7, "color": (0, 0, 255), "wheel_color": (0, 0, 0)}
+    {"x": -100, "y": 410, "width": 100, "height": 50, "speed": 0.085, "color": (0, 255, 0), "wheel_color": (0, 0, 0)},
+    {"x": 150, "y": 425, "width": 100, "height": 50, "speed": 0.025, "color": (255, 0, 0), "wheel_color": (0, 0, 0)},
+    {"x": -150, "y": 460, "width": 100, "height": 50, "speed": 0.125, "color": (0, 0, 255), "wheel_color": (0, 0, 0)}
 ]
 
 striproad = [
@@ -35,12 +35,12 @@ sun = {"x": 0, "y": 0, "radius": 50, "angle": 0, "speed": -0.0025, "color": (255
 
 # Properti gedung
 buildings = [
-    {"x": random.randint(0, 800), "y": 300, "width": 100, "height": 150, "speed": random.randint(1, 2), "color": (200, 200, 200)},
-    {"x": random.randint(0, 800), "y": 250, "width": 120, "height": 200, "speed": random.randint(1, 2), "color": (180, 180, 180)},
-    {"x": random.randint(0, 800), "y": 280, "width": 80, "height": 170, "speed": random.randint(1, 2), "color": (160, 160, 160)},
-    {"x": random.randint(0, 800), "y": 240, "width": 150, "height": 210, "speed": random.randint(1, 2), "color": (140, 140, 140)},
-    {"x": random.randint(0, 800), "y": 290, "width": 110, "height": 160, "speed": random.randint(1, 2), "color": (120, 120, 120)},
-    {"x": random.randint(0, 800), "y": 270, "width": 90, "height": 180, "speed": random.randint(1, 2), "color": (100, 100, 100)}
+    {"x": random.randint(0, 800), "y": 300, "width": 100, "height": 150, "speed": random.uniform(1.0, 1.6), "color": (200, 200, 200)},
+    {"x": random.randint(0, 800), "y": 250, "width": 120, "height": 200, "speed": random.uniform(1.0, 1.6), "color": (180, 180, 180)},
+    {"x": random.randint(0, 800), "y": 280, "width": 80, "height": 170, "speed": random.uniform(1.0, 1.6), "color": (160, 160, 160)},
+    {"x": random.randint(0, 800), "y": 240, "width": 150, "height": 210, "speed": random.uniform(1.0, 1.6), "color": (140, 140, 140)},
+    {"x": random.randint(0, 800), "y": 290, "width": 110, "height": 160, "speed": random.uniform(1.0, 1.6), "color": (120, 120, 120)},
+    {"x": random.randint(0, 800), "y": 270, "width": 90, "height": 180, "speed": random.uniform(1.0, 1.6), "color": (100, 100, 100)}
 ]
 
 # Dimensi layar
@@ -53,7 +53,7 @@ while running:
     # Tangani event
     events = sdl2.ext.get_events()
     for event in events:
-        if event.type == sdl2.SDL_QUIT:
+        if event.type == sdl2.SDL_QUIT or event.type == sdl2.SDL_KEYDOWN and event.key.keysym.sym == sdl2.SDLK_ESCAPE:
             running = False
 
     # Update posisi mobil
